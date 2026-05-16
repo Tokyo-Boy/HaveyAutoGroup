@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Inventory | Havey Auto Group</title>
+    
+    <style>
+        /* Modern Reset & Base Styles - Kept identical to index.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: #0f172a; /* Deep Slate */
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            color: #f59e0b; /* Amber */
+        }
+
+        .logo span {
+            color: #ffffff;
+        }
+
+        .desktop-nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            padding-bottom: 0.25rem;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #f59e0b;
+        }
+
+        .nav-link.active {
+            border-color: #f59e0b;
+        }
+
+        .cta-btn {
+            background-color: #f59e0b;
+            color: #0f172a;
+            font-weight: 700;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: #d97706;
+        }
+
+        /* Hamburger Menu Icon Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 3px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Mobile Navigation Dropdown Drawer */
+        .mobile-nav {
+            display: none;
+            background-color: #1e293b;
+            border-top: 1px solid #334155;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-link {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #334155;
+        }
+
+        .mobile-link:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-link.active, .mobile-link:hover {
+            color: #f59e0b;
+        }
+
+        /* Mini Sub-Hero Banner for Inventory */
+        .inventory-hero {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('images/hero.webp');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            padding: 4rem 1.5rem;
+            text-align: center;
+        }
+
+        .inventory-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .inventory-hero p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+
+        /* Filter & Search Dashboard Controls */
+        .search-filter-container {
+            max-width: 1200px;
+            margin: -1.5rem auto 2rem auto;
+            padding: 1.5rem;
+            background: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 280px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            background-color: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .filter-btn.active {
+            background-color: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+        }
+
+        /* Vehicle Grid Layout Grid */
+        .inventory-section {
+            max-width: 1200px;
+            margin: 0 auto 5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .vehicle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Vehicle Card UI Elements */
+        .vehicle-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 210px;
+            background-color: #e2e8f0;
+        }
+
+        .vehicle-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-tag {
+            position: absolute;
+            top: 0.75rem;
+            left: 0.75rem;
+            background-color: #d97706;
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.25rem;
+            letter-spacing: 0.05em;
+        }
+
+        .vehicle-info-block {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .vehicle-meta-top {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .vehicle-title {
+            font-size: 1.3rem;
+            color: #0f172a;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .vehicle-price {
+            font-size: 1.4rem;
+            color: #f59e0b;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+
+        .specs-snippet-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            background-color: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            color: #475569;
+            margin-bottom: 1rem;
+        }
+
+        .spec-item {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .vehicle-desc {
+            font-size: 0.88rem;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 1.25rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .view-details-btn {
+            display: block;
+            text-align: center;
+            background-color: #0f172a;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: auto;
+            transition: background-color 0.2s;
+        }
+
+        .view-details-btn:hover {
+            background-color: #1e293b;
+        }
+
+        /* Empty Search Results Feedback state */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+            grid-column: 1 / -1;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #020617;
+            color: #94a3b8;
+            padding: 4rem 1.5rem 2rem 1.5rem;
+            margin-top: auto;
+            border-top: 1px solid #1e293b;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2.5rem;
+            padding-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: #ffffff;
+        }
+
+        .copyright {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid #0f172a;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #475569;
+        }
+
+        /* --- MOBILE RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            .desktop-nav, .nav-container .cta-btn {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-toggle.open span:nth-child(1) {
+                transform: translateY(7.5px) rotate(45deg);
+            }
+            .menu-toggle.open span:nth-child(2) {
+                opacity: 0;
+            }
+            .menu-toggle.open span:nth-child(3) {
+                transform: translateY(-7.5px) rotate(-45deg);
+            }
+
+            .mobile-nav.active {
+                display: block;
+            }
+
+            .search-filter-container {
+                margin-top: 1rem;
+                padding: 1rem;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-buttons {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 0.25rem;
+                white-space: nowrap;
+            }
+
+            .inventory-hero h1 {
+                font-size: 1.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                Havey <span>Auto Group</span>
+            </a>
+
+            <nav class="desktop-nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="vehicles.html" class="nav-link active">Inventory</a>
+                <a href="service.html" class="nav-link">Service & Parts</a>
+                <a href="about.html" class="nav-link">About Us</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+
+            <a href="vehicles.html" class="cta-btn">Browse Cars</a>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <nav class="mobile-nav" id="mobileMenu">
+            <a href="index.html" class="mobile-link">Home</a>
+            <a href="vehicles.html" class="mobile-link active">Inventory</a>
+            <a href="service.html" class="mobile-link">Service & Parts</a>
+            <a href="about.html" class="mobile-link">About Us</a>
+            <a href="contact.html" class="mobile-link">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="inventory-hero">
+            <h1>Our Vehicle Inventory</h1>
+            <p>Browse our current collection of elite hybrid, electric, crossovers, and heavy duty trucks.</p>
+        </section>
+
+        <section class="search-filter-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search by make, model, trim, etc...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="All">All Vehicles</button>
+                <button class="filter-btn" data-category="Electric & Hybrid">Electric & Hybrid</button>
+                <button class="filter-btn" data-category="SUVs & Crossovers">SUVs & Crossovers</button>
+                <button class="filter-btn" data-category="Sedans & Coupes">Sedans & Coupes</button>
+                <button class="filter-btn" data-category="Trucks">Trucks</button>
+            </div>
+        </section>
+
+        <section class="inventory-section">
+            <div class="vehicle-grid" id="vehicleGrid">
+                <div class="no-results">
+                    <h3>Loading Inventory Catalog...</h3>
+                    <p>Connecting to database file references.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 style="color: #f59e0b; font-weight: 800;">HAVEY AUTO GROUP</h4>
+                <p style="font-size: 0.9rem; line-height: 1.6;">Your trusted local premium automotive dealership network. Providing top-tier client hospitality and care.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="vehicles.html">Inventory</a></li>
+                    <li><a href="service.html">Service Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Hub</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Havey Auto Group. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hamburger nav drawer activation toggle triggers
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('open');
+                mobileMenu.classList.toggle('active');
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    menuToggle.classList.remove('open');
+                    mobileMenu.classList.remove('active');
+                }
+            });
+
+            // DATA ENGINE CORE: Handles local JSON fetching, parsing, listing and live rendering
+            let vehiclesData = [];
+            let activeCategory = 'All';
+            const vehicleGrid = document.getElementById('vehicleGrid');
+            const searchInput = document.getElementById('searchInput');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+
+            // Format Currency Numbers smoothly into USD structure ($XX,XXX)
+            const formatPrice = (num) => {
+                return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(num);
+            };
+
+            // Format Mileage values cleanly
+            const formatMileage = (num) => {
+                return new Intl.NumberFormat('en-US').format(num) + ' mi';
+            };
+
+            // Main function processing filtering logic arrays and compiling HTML templates
+            const renderGrid = () => {
+                const searchString = searchInput.value.toLowerCase().trim();
+                
+                // Array filter operation processing matching properties
+                const filteredVehicles = vehiclesData.filter(car => {
+                    const matchesCategory = (activeCategory === 'All' || car.category === activeCategory);
+                    const matchesSearch = (
+                        car.make.toLowerCase().includes(searchString) ||
+                        car.model.toLowerCase().includes(searchString) ||
+                        car.trim.toLowerCase().includes(searchString) ||
+                        car.year.toString().includes(searchString) ||
+                        car.fuelType.toLowerCase().includes(searchString)
+                    );
+                    return matchesCategory && matchesSearch;
+                });
+
+                // Clear layout contents before appending newly parsed subsets
+                vehicleGrid.innerHTML = '';
+
+                if (filteredVehicles.length === 0) {
+                    vehicleGrid.innerHTML = `
+                        <div class="no-results">
+                            <h3>No Matching Vehicles Found</h3>
+                            <p>Try clearing your search query input filter or select another type classification.</p>
+                        </div>`;
+                    return;
+                }
+
+                // Inject structured catalog markup patterns 
+                filteredVehicles.forEach(car => {
+                    const card = document.createElement('article');
+                    card.className = 'vehicle-card';
+                    card.innerHTML = `
+                        <div class="image-wrapper">
+                            ${car.featured ? `<div class="featured-tag">Featured</div>` : ''}
+                            <img src="${car.image}" alt="${car.year} ${car.make} ${car.model}" class="vehicle-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' viewBox=\'0 0 400 250\'><rect width=\'100%\' height=\'100%\' fill=\'%23cbd5e1\'/><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2364748b\' text-anchor=\'middle\'>Image Coming Soon</text></svg>'">
+                        </div>
+                        <div class="vehicle-info-block">
+                            <div class="vehicle-meta-top">
+                                <span>${car.year}</span>
+                                <span>${formatMileage(car.mileage)}</span>
+                            </div>
+                            <h2 class="vehicle-title">${car.make} ${car.model}</h2>
+                            <div class="vehicle-price">${formatPrice(car.price)}</div>
+                            <div class="specs-snippet-grid">
+                                <div class="spec-item" title="Engine: ${car.engine}">⚙️ ${car.engine}</div>
+                                <div class="spec-item" title="Transmission: ${car.transmission}">🕹️ ${car.transmission}</div>
+                                <div class="spec-item" title="Exterior: ${car.exteriorColor}">🎨 ${car.exteriorColor}</div>
+                                <div class="spec-item" title="Fuel: ${car.fuelType}">⛽ ${car.fuelType}</div>
+                            </div>
+                            <p class="vehicle-desc">${car.details}</p>
+                            <a href="contact.html?id=${car.id}&vehicle=${encodeURIComponent(car.make + ' ' + car.model)}" class="view-details-btn">Inquire / Take Test Drive</a>
+                        </div>
+                    `;
+                    vehicleGrid.appendChild(card);
+                });
+            };
+
+            // Event Hooks capturing character strokes for live updates
+            searchInput.addEventListener('input', renderGrid);
+
+            // Category Tab button clicking listeners
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    activeCategory = e.currentTarget.getAttribute('data-category');
+                    renderGrid();
+                });
+            });
+
+            // Initial Execution: Read local vehicles.json payload records dynamically
+            fetch('vehicles.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Database server resource query network error connection failed.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    vehiclesData = data;
+                    renderGrid(); // Display full inventory list cleanly
+                })
+                .catch(error => {
+                    console.error('Error fetching inventory dataset profiles:', error);
+                    vehicleGrid.innerHTML = `
+                        <div class="no-results">
+                            <h3>Unable to Load Catalog Data</h3>
+                            <p>Please check your local context file configuration settings layout for vehicles.json dataset.</p>
+                        </div>`;
+                });
+        });
+    </script>
+</body>
+</html>

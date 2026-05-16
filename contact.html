@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Hub | Havey Auto Group</title>
+    
+    <style>
+        /* Modern Reset & Base Styles - Kept identical to index.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: #0f172a; /* Deep Slate */
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            color: #f59e0b; /* Amber */
+        }
+
+        .logo span {
+            color: #ffffff;
+        }
+
+        .desktop-nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            padding-bottom: 0.25rem;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #f59e0b;
+        }
+
+        .nav-link.active {
+            border-color: #f59e0b;
+        }
+
+        .cta-btn {
+            background-color: #f59e0b;
+            color: #0f172a;
+            font-weight: 700;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: #d97706;
+        }
+
+        /* Hamburger Menu Icon Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 3px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Mobile Navigation Dropdown Drawer */
+        .mobile-nav {
+            display: none;
+            background-color: #1e293b;
+            border-top: 1px solid #334155;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-link {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #334155;
+        }
+
+        .mobile-link:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-link.active, .mobile-link:hover {
+            color: #f59e0b;
+        }
+
+        /* Sub-Hero Contact Header Banner */
+        .contact-hero {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('images/hero.webp');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            padding: 5rem 1.5rem;
+            text-align: center;
+        }
+
+        .contact-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .contact-hero p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Split Page Container Layout */
+        .contact-container {
+            max-width: 1200px;
+            margin: -2rem auto 5rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 7fr 5fr;
+            gap: 2.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Forms and Info Block Architecture */
+        .contact-card, .info-sidebar-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 2.25rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #0f172a;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Form Controls Setup */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            outline: none;
+            background-color: #f8fafc;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #f59e0b;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-contact-btn {
+            background-color: #f59e0b;
+            color: #0f172a;
+            border: none;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .submit-contact-btn:hover {
+            background-color: #d97706;
+        }
+
+        /* Success Messaging Notification Banner */
+        .alert-success {
+            display: none;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Information Details Blocks */
+        .info-detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .info-detail-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .icon-badge {
+            background-color: #fef3c7;
+            color: #d97706;
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+
+        .detail-text h4 {
+            font-size: 1rem;
+            color: #0f172a;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-text p, .detail-text span {
+            font-size: 0.95rem;
+            color: #475569;
+            line-height: 1.5;
+            display: block;
+        }
+
+        /* Placeholder Map Card Canvas Container */
+        .map-placeholder-box {
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            height: 180px;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            padding: 1.5rem;
+            background-image: linear-gradient(45deg, #f1f5f9 25%, #e2e8f0 25%, #e2e8f0 50%, #f1f5f9 50%, #f1f5f9 75%, #e2e8f0 75%, #e2e8f0 100%);
+            background-size: 40px 40px;
+            opacity: 0.7;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #020617;
+            color: #94a3b8;
+            padding: 4rem 1.5rem 2rem 1.5rem;
+            margin-top: auto;
+            border-top: 1px solid #1e293b;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2.5rem;
+            padding-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: #ffffff;
+        }
+
+        .copyright {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid #0f172a;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #475569;
+        }
+
+        /* --- MOBILE RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 968px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                margin-top: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .desktop-nav, .nav-container .cta-btn {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-toggle.open span:nth-child(1) {
+                transform: translateY(7.5px) rotate(45deg);
+            }
+            .menu-toggle.open span:nth-child(2) {
+                opacity: 0;
+            }
+            .menu-toggle.open span:nth-child(3) {
+                transform: translateY(-7.5px) rotate(-45deg);
+            }
+
+            .mobile-nav.active {
+                display: block;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-hero h1 {
+                font-size: 1.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                Havey <span>Auto Group</span>
+            </a>
+
+            <nav class="desktop-nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="vehicles.html" class="nav-link">Inventory</a>
+                <a href="service.html" class="nav-link">Service & Parts</a>
+                <a href="about.html" class="nav-link">About Us</a>
+                <a href="contact.html" class="nav-link active">Contact</a>
+            </nav>
+
+            <a href="vehicles.html" class="cta-btn">Browse Cars</a>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <nav class="mobile-nav" id="mobileMenu">
+            <a href="index.html" class="mobile-link">Home</a>
+            <a href="vehicles.html" class="mobile-link">Inventory</a>
+            <a href="service.html" class="mobile-link">Service & Parts</a>
+            <a href="about.html" class="mobile-link">About Us</a>
+            <a href="contact.html" class="mobile-link active">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="contact-hero">
+            <h1>Connect With Our Team</h1>
+            <p>Have a question about a specific inventory model or dynamic financing parameters? Send our desk a message directly.</p>
+        </section>
+
+        <section class="contact-container">
+            
+            <div class="contact-card">
+                <h2 class="section-title">Send An Inquiry</h2>
+                
+                <div class="alert-success" id="contactSuccessAlert">
+                    <strong>Message Routed Successfully!</strong> Thank you for reaching out. A representative from the designated department will contact you directly within 1 business day.
+                </div>
+
+                <form id="clientContactForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="usrName">Full Name *</label>
+                            <input type="text" id="usrName" required placeholder="Your Full Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="usrEmail">Email Address *</label>
+                            <input type="email" id="usrEmail" required placeholder="Enter email address">
+                        </div>
+                        <div class="form-group">
+                            <label for="usrPhone">Phone Number *</label>
+                            <input type="tel" id="usrPhone" required placeholder="(555) 000-0000">
+                        </div>
+                        <div class="form-group">
+                            <label for="deptTarget">Primary Department *</label>
+                            <select id="deptTarget" required>
+                                <option value="" disabled selected>Select an internal department</option>
+                                <option value="sales">Vehicle Sales & Trade-Ins</option>
+                                <option value="finance">Finance & Lending Assistance</option>
+                                <option value="service">Service Advisory Desk</option>
+                                <option value="parts">OEM Parts Ordering</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="msgContent">Message Body *</label>
+                            <textarea id="msgContent" required placeholder="Type your notes or questions here details regarding vehicle stock IDs..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-contact-btn">Send Message</button>
+                </form>
+            </div>
+
+            <div class="info-sidebar-card">
+                <h3 class="section-title">Showroom Details</h3>
+                
+                <div class="info-detail-item">
+                    <div class="icon-badge">📍</div>
+                    <div class="detail-text">
+                        <h4>Main Address</h4>
+                        <p>100 Automotive Parkway</p>
+                        <p>Suite A, Cityville</p>
+                    </div>
+                </div>
+
+                <div class="info-detail-item">
+                    <div class="icon-badge">📞</div>
+                    <div class="detail-text">
+                        <h4>Direct Lines</h4>
+                        <span><strong>Sales Desk:</strong> (555) 123-4567</span>
+                        <span><strong>Service Bay:</strong> (555) 123-4568</span>
+                    </div>
+                </div>
+
+                <div class="info-detail-item">
+                    <div class="icon-badge">✉️</div>
+                    <div class="detail-text">
+                        <h4>Digital Mailboxes</h4>
+                        <span><strong>General Support:</strong> support@haveyauto.com</span>
+                        <span><strong>Lending Desk:</strong> finance@haveyauto.com</span>
+                    </div>
+                </div>
+
+                <div class="map-placeholder-box" aria-hidden="true">
+                    Interactive Location Map Grid Canvas Elements Area
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 style="color: #f59e0b; font-weight: 800;">HAVEY AUTO GROUP</h4>
+                <p style="font-size: 0.9rem; line-height: 1.6;">Your trusted local premium automotive dealership network. Providing top-tier client hospitality and care.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="vehicles.html">Inventory</a></li>
+                    <li><a href="service.html">Service Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Hub</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Havey Auto Group. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('open');
+                mobileMenu.classList.toggle('active');
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    menuToggle.classList.remove('open');
+                    mobileMenu.classList.remove('active');
+                }
+            });
+
+            // Form Submit Intercept handling actions cleanly
+            const contactForm = document.getElementById('clientContactForm');
+            const successAlert = document.getElementById('contactSuccessAlert');
+
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Retain position context cleanly
+                
+                successAlert.style.display = 'block';
+                contactForm.reset(); // Flush user text data lines cleanly
+
+                // Push position context straight up towards confirmation indicator
+                successAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+    </script>
+</body>
+</html>

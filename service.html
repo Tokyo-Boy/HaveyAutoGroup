@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service & Parts Center | Havey Auto Group</title>
+    
+    <style>
+        /* Modern Reset & Base Styles - Kept identical to index.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: #0f172a; /* Deep Slate */
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            color: #f59e0b; /* Amber */
+        }
+
+        .logo span {
+            color: #ffffff;
+        }
+
+        .desktop-nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            padding-bottom: 0.25rem;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #f59e0b;
+        }
+
+        .nav-link.active {
+            border-color: #f59e0b;
+        }
+
+        .cta-btn {
+            background-color: #f59e0b;
+            color: #0f172a;
+            font-weight: 700;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: #d97706;
+        }
+
+        /* Hamburger Menu Icon Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 3px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Mobile Navigation Dropdown Drawer */
+        .mobile-nav {
+            display: none;
+            background-color: #1e293b;
+            border-top: 1px solid #334155;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-link {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #334155;
+        }
+
+        .mobile-link:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-link.active, .mobile-link:hover {
+            color: #f59e0b;
+        }
+
+        /* Sub-Hero Service Header */
+        .service-hero {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('images/hero.webp');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            padding: 5rem 1.5rem;
+            text-align: center;
+        }
+
+        .service-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .service-hero p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Two-Column Booking & Services Hub */
+        .service-container {
+            max-width: 1200px;
+            margin: -2rem auto 5rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 7fr 5fr;
+            gap: 2.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Service Cards & Booking Form Block */
+        .booking-card, .info-sidebar-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 2.25rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #0f172a;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Structured Form Configurations */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            outline: none;
+            background-color: #f8fafc;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #f59e0b;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-service-btn {
+            background-color: #f59e0b;
+            color: #0f172a;
+            border: none;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .submit-service-btn:hover {
+            background-color: #d97706;
+        }
+
+        /* Success state modal alert */
+        .alert-success {
+            display: none;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Interactive Service Rate Calculator Styles */
+        .calculator-block {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .calc-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .calc-total {
+            display: flex;
+            justify-content: space-between;
+            border-top: 2px dashed #cbd5e1;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        /* Sidebar Content Lists */
+        .service-list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .service-list-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .icon-badge {
+            background-color: #fef3c7;
+            color: #d97706;
+            width: 36px;
+            height: 36px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .item-details h4 {
+            font-size: 1rem;
+            color: #0f172a;
+            margin-bottom: 0.2rem;
+        }
+
+        .item-details p {
+            font-size: 0.88rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        /* Business Hours Table */
+        .hours-table {
+            width: 100%;
+            margin-top: 1.5rem;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .hours-table tr {
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .hours-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .hours-table td {
+            padding: 0.5rem 0;
+            color: #475569;
+        }
+
+        .hours-table td.day {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .hours-table td.time {
+            text-align: right;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #020617;
+            color: #94a3b8;
+            padding: 4rem 1.5rem 2rem 1.5rem;
+            margin-top: auto;
+            border-top: 1px solid #1e293b;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2.5rem;
+            padding-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: #ffffff;
+        }
+
+        .copyright {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid #0f172a;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #475569;
+        }
+
+        /* --- MOBILE RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 968px) {
+            .service-container {
+                grid-template-columns: 1fr;
+                margin-top: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .desktop-nav, .nav-container .cta-btn {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-toggle.open span:nth-child(1) {
+                transform: translateY(7.5px) rotate(45deg);
+            }
+            .menu-toggle.open span:nth-child(2) {
+                opacity: 0;
+            }
+            .menu-toggle.open span:nth-child(3) {
+                transform: translateY(-7.5px) rotate(-45deg);
+            }
+
+            .mobile-nav.active {
+                display: block;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-hero h1 {
+                font-size: 1.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                Havey <span>Auto Group</span>
+            </a>
+
+            <nav class="desktop-nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="vehicles.html" class="nav-link">Inventory</a>
+                <a href="service.html" class="nav-link active">Service & Parts</a>
+                <a href="about.html" class="nav-link">About Us</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+
+            <a href="vehicles.html" class="cta-btn">Browse Cars</a>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <nav class="mobile-nav" id="mobileMenu">
+            <a href="index.html" class="mobile-link">Home</a>
+            <a href="vehicles.html" class="mobile-link">Inventory</a>
+            <a href="service.html" class="mobile-link active">Service & Parts</a>
+            <a href="about.html" class="mobile-link">About Us</a>
+            <a href="contact.html" class="mobile-link">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="service-hero">
+            <h1>Certified Automotive Care</h1>
+            <p>From advanced electric diagnostics to classic mechanical maintenance tuning, our factory-trained technicians keep your journey moving seamlessly.</p>
+        </section>
+
+        <section class="service-container">
+            
+            <div class="booking-card">
+                <h2 class="section-title">Schedule Care & Maintenance</h2>
+                
+                <div class="alert-success" id="successAlert">
+                    <strong>Appointment Requested Successfully!</strong> Our service advisory desk will review your submission and contact you within 2 business hours to confirm your time slot assignment.
+                </div>
+
+                <form id="serviceBookingForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" required placeholder="Your Full Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="clientEmail">Email Address *</label>
+                            <input type="email" id="clientEmail" required placeholder="Enter email address">
+                        </div>
+                        <div class="form-group">
+                            <label for="clientPhone">Phone Number *</label>
+                            <input type="tel" id="clientPhone" required placeholder="(555) 000-0000">
+                        </div>
+                        <div class="form-group">
+                            <label for="carYear">Vehicle Year *</label>
+                            <input type="number" id="carYear" required min="1990" max="2027" placeholder="2025">
+                        </div>
+                        <div class="form-group">
+                            <label for="carMakeModel">Vehicle Make & Model *</label>
+                            <input type="text" id="carMakeModel" required placeholder="e.g., Apex Horizon">
+                        </div>
+                        <div class="form-group">
+                            <label for="serviceType">Primary Service Operation *</label>
+                            <select id="serviceType" required>
+                                <option value="" disabled selected>Select a maintenance operation</option>
+                                <option value="oil" data-price="79">Synthetic Oil & Filter Exchange</option>
+                                <option value="tire" data-price="30">Tire Rotation & Force Balancing</option>
+                                <option value="brake" data-price="249">Premium Brake Pad Replacement</option>
+                                <option value="ev" data-price="120">EV Powertrain Conditioning & Grid Check</option>
+                                <option value="diagnostic" data-price="149">Comprehensive Check Engine Diagnostic</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookingDate">Preferred Date *</label>
+                            <input type="date" id="bookingDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookingTime">Preferred Time Slot *</label>
+                            <select id="bookingTime" required>
+                                <option value="" disabled selected>Select an hour range</option>
+                                <option value="morning">Morning (8:00 AM - 12:00 PM)</option>
+                                <option value="afternoon">Afternoon (12:00 PM - 4:00 PM)</option>
+                                <option value="evening">Late Afternoon (4:00 PM - 6:00 PM)</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="serviceNotes">Detailed Symptoms or Notes</label>
+                            <textarea id="serviceNotes" placeholder="Describe any noises, performance changes, or specific parts required..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="calculator-block">
+                        <h4 style="font-size: 0.95rem; font-weight:700; color:#0f172a; margin-bottom: 0.75rem;">Estimated Baseline Cost Breakdown</h4>
+                        <div class="calc-row">
+                            <span>Selected Operation Rate:</span>
+                            <span id="rateOperation">$0.00</span>
+                        </div>
+                        <div class="calc-row">
+                            <span>Shop Supplies & Environmental Disposal Fees:</span>
+                            <span id="rateFees">$0.00</span>
+                        </div>
+                        <div class="calc-total">
+                            <span>Estimated Total:</span>
+                            <span id="rateTotal">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-service-btn" style="margin-top: 1.5rem;">Submit Maintenance Request</button>
+                </form>
+            </div>
+
+            <div class="info-sidebar-card">
+                <h3 class="section-title">Why Havey Service?</h3>
+                
+                <div class="service-list-item">
+                    <div class="icon-badge">⚡</div>
+                    <div class="item-details">
+                        <h4>EV & Hybrid Certified Experts</h4>
+                        <p>Equipped with specialty isolated diagnostic cells to maintain multi-motor configurations and advanced high-voltage batteries safely.</p>
+                    </div>
+                </div>
+
+                <div class="service-list-item">
+                    <div class="icon-badge">🛠️</div>
+                    <div class="item-details">
+                        <h4>OEM Genuine Parts Guarantee</h4>
+                        <p>We preserve factory specifications and performance by using exact original equipment manufacturer components built for your car model.</p>
+                    </div>
+                </div>
+
+                <div class="service-list-item">
+                    <div class="icon-badge">📋</div>
+                    <div class="item-details">
+                        <h4>Multi-Point Complimentary Inspections</h4>
+                        <p>Every vehicle rolling out of our bays receives a comprehensive health check covering fluid qualities, brake depths, and tire treads.</p>
+                    </div>
+                </div>
+
+                <h3 class="section-title" style="margin-top: 2.5rem;">Service Center Hours</h3>
+                <table class="hours-table">
+                    <tr>
+                        <td class="day">Monday - Friday</td>
+                        <td class="time">7:30 AM - 6:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td class="day">Saturday</td>
+                        <td class="time">8:00 AM - 4:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td class="day">Sunday</td>
+                        <td class="time" style="color: #ef4444; font-weight: 600;">Closed</td>
+                    </tr>
+                </table>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 style="color: #f59e0b; font-weight: 800;">HAVEY AUTO GROUP</h4>
+                <p style="font-size: 0.9rem; line-height: 1.6;">Your trusted local premium automotive dealership network. Providing top-tier client hospitality and care.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="vehicles.html">Inventory</a></li>
+                    <li><a href="service.html">Service Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Hub</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Havey Auto Group. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hamburger Mobile Toggle Navigation Engine
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('open');
+                mobileMenu.classList.toggle('active');
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    menuToggle.classList.remove('open');
+                    mobileMenu.classList.remove('active');
+                }
+            });
+
+            // Set default date picker target value to tomorrow morning minimum limit boundary
+            const dateInput = document.getElementById('bookingDate');
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.min = tomorrow.toISOString().split('T')[0];
+
+            // INTERACTIVE COST MATRIX CALCULATOR SCRIPT
+            const serviceSelect = document.getElementById('serviceType');
+            const rateOperation = document.getElementById('rateOperation');
+            const rateFees = document.getElementById('rateFees');
+            const rateTotal = document.getElementById('rateTotal');
+
+            serviceSelect.addEventListener('change', () => {
+                const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
+                const basePrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+                
+                // standard baseline fee calculation algorithms
+                const environmentalFee = basePrice > 0 ? Math.round(basePrice * 0.085) : 0; 
+                const finalSumTotal = basePrice + environmentalFee;
+
+                // Output metrics to dashboard tracking cells
+                rateOperation.textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(basePrice);
+                rateFees.textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(environmentalFee);
+                rateTotal.textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(finalSumTotal);
+            });
+
+            // Form Submit Intercept handling actions smoothly
+            const bookingForm = document.getElementById('serviceBookingForm');
+            const successAlert = document.getElementById('successAlert');
+
+            bookingForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Lock browser page redirect reloads
+                
+                // Highlight success confirmation dialog view
+                successAlert.style.display = 'block';
+                bookingForm.reset(); // Clear all user form fields cleanly
+                
+                // Clear the calculator block display matrix manually
+                rateOperation.textContent = '$0.00';
+                rateFees.textContent = '$0.00';
+                rateTotal.textContent = '$0.00';
+
+                // Scroll view window smoothly back to alert view notification banner
+                successAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+    </script>
+</body>
+</html>
